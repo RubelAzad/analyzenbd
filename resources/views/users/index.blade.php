@@ -3,41 +3,50 @@
 
 @section('content')
     <div class="container">
-        <h2>User List</h2>
+
         <div class="mb-3">
-            <a href="{{ route('customuser.create') }}" class="btn btn-success">Create User</a>
-        </div>
-        <div class="mb-3">
-            <a href="{{ route('deleted') }}" class="btn btn-success">Show Deleted User</a>
+            <div class="row justify-content-between align-items-center">
+                <div class="col-auto">
+                    <h2 class="mb-0">User List</h2>
+                </div>
+                <div class="col-auto">
+                    <a href="{{ route('customuser.create') }}" class="btn btn-success">Create User</a>
+                    <a href="{{ route('deleted') }}" class="btn btn-success ml-2">Show Deleted User</a>
+                </div>
+            </div>
         </div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Photo</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($users as $user)
+        <div class="table-responsive"> <!-- Make table responsive -->
+            <table class="table table-bordered">
+                <thead class="thead-dark"> <!-- Dark header -->
                     <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->email }}</td>
-                        <td><img src="{{ asset('storage/' . $user->photo) }}" alt="{{ $user->name }}" width="100"></td>
-                        <td>
-                            <a href="{{ route('customuser.show', $user->id) }}" class="btn btn-primary">View</a>
-                            <a href="{{ route('customuser.edit', $user->id) }}" class="btn btn-secondary">Edit</a>
-                            <form action="{{ route('customuser.destroy', $user->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Photo</th>
+                        <th>Actions</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach($users as $user)
+                        <tr>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td><img src="{{ asset('storage/' . $user->photo) }}" alt="{{ $user->name }}" width="60"></td>
+                            <td>
+                                <a href="{{ route('customuser.show', $user->id) }}" class="btn btn-primary btn-sm">View</a> <!-- Small button -->
+                                <a href="{{ route('customuser.edit', $user->id) }}" class="btn btn-secondary btn-sm">Edit</a> <!-- Small button -->
+                                <form action="{{ route('customuser.destroy', $user->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button> <!-- Small button -->
+
+
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 @endsection

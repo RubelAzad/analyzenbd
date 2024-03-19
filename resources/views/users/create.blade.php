@@ -3,28 +3,51 @@
 
 @section('content')
     <div class="container">
-        <h2>Create User</h2>
-        <form action="{{ route('customuser.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" name="name">
+        <div class="mb-3">
+            <div class="row justify-content-left">
+                <div class="col-auto">
+                    <a href="{{ route('customuser.index') }}" class="btn btn-success">Back</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" name="email">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Create User</h2>
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('customuser.store') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" id="name" name="name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <div class="form-group">
+                                <label for="photo">Photo:</label>
+                                <div class="custom-file">
+                                    <input type="file" class="form-control" id="avatar" name="photo" onchange="previewImage(event)" accept="image/*">
+                                </div>
+                                <img id="preview" class="mt-4 mb-4 d-block" src="#" style="display: none; max-width: 100px; max-height: 100px;">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password">
-            </div>
-            <div class="form-group">
-                <label for="photo">Photo:</label>
-                <input type="file" class="form-control-file" id="photo" name="photo" onchange="previewImage(event)">
-                <img id="preview" class="mt-2 mb-2" src="#" alt="Preview" style="display: none; width: 100px; height: 100px;">
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </div>
+
     </div>
 
     <script>
