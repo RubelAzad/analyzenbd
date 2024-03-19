@@ -3,6 +3,13 @@
 
 @section('content')
     <div class="container">
+        <div class="mb-3">
+            <div class="row justify-content-left">
+                <div class="col-auto">
+                    <a href="{{ route('customuser.index') }}" class="btn btn-success">Back</a>
+                </div>
+            </div>
+        </div>
         <h2>Soft-Deleted Users</h2>
         <table class="table">
             <thead>
