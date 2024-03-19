@@ -10,15 +10,23 @@ use Tests\TestCase;
 
 class CustomUserServiceTest extends TestCase
 {
-    use RefreshDatabase; // Ensures a fresh database for each test
+   // use RefreshDatabase; // Ensures a fresh database for each test
+
+    protected function refreshCustomUsersTable()
+    {
+        $this->artisan('migrate:refresh --path=database/migrations/2024_03_14_062319_create_custom_users_table.php');
+    }
 
     protected $userService;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->refreshCustomUsersTable(); // Refresh the custom_users table before each test
         $this->userService = new CustomUserService();
     }
+
+
 
     /** @test */
     public function it_can_list_all_users()
@@ -41,15 +49,15 @@ class CustomUserServiceTest extends TestCase
     public function it_can_create_a_new_user()
     {
         $userData = [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Test User 22',
+            'email' => 'test547@example.com',
             'password' => 'password',
         ];
 
         $user = $this->userService->create($userData);
 
         $this->assertInstanceOf(CustomUser::class, $user);
-        $this->assertDatabaseHas('custom_users', ['email' => 'test@example.com']);
+        $this->assertDatabaseHas('custom_users', ['email' => 'test547@example.com']);
     }
 
     /** @test */
@@ -101,6 +109,25 @@ class CustomUserServiceTest extends TestCase
 
             // Assert that the trashed user is in the list of trashed users
             $this->assertTrue($trashedUsers->contains($user));
+        }
+
+         /* @test */
+        public function it_can_permanently_delete_soft_deleted_user()
+        {
+            // Create a user manually
+            $user = CustomUser::create(['name' => 'Test User', 'email' => 'test@example.com', 'password' => 'password']);
+
+            // Soft delete the user
+            $this->userService->delete($user);
+
+            // Permanently delete the soft-deleted user
+            $this->userService->destroyPermanently($user->id);
+
+            // Attempt to retrieve the soft-deleted user
+            $deletedUser = CustomUser::withTrashed()->find($user->id);
+
+            // Assert that the user is not found (permanently deleted)
+            $this->assertNull($deletedUser);
         }
 
 
