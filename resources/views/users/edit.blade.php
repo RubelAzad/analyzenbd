@@ -38,34 +38,6 @@
                                 <div class="error" style="color: red;">{{ $message }}</div>
                             @enderror
                             <div class="form-group">
-                                <label for="street">Street:</label>
-                                <input type="text" class="form-control" id="street" name="address[street]" value="{{ $customuser->addresses->first()->street ?? '' }}">
-                            </div>
-                             @error('address.street')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
-                                <label for="city">City:</label>
-                                <input type="text" class="form-control" id="city" name="address[city]" value="{{ $customuser->addresses->first()->city ?? '' }}">
-                            </div>
-                            @error('address.city')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
-                                <label for="state">State:</label>
-                                <input type="text" class="form-control" id="state" name="address[state]" value="{{ $customuser->addresses->first()->state ?? '' }}">
-                            </div>
-                            @error('address.state')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
-                                <label for="country">Country:</label>
-                                <input type="text" class="form-control" id="country" name="address[country]" value="{{ $customuser->addresses->first()->country ?? '' }}">
-                            </div>
-                            @error('address.country')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
                                 <label for="photo">Photo:</label>
                                 <div class="custom-file">
                                     <input type="file" class="form-control" id="avatar" name="photo" onchange="previewImage(event)" accept="image/*">
@@ -75,6 +47,39 @@
                             @error('photo')
                                 <div class="error" style="color: red;">{{ $message }}</div>
                             @enderror
+
+                            @foreach ($customuser->addresses as $index => $address)
+                                <div class="form-group">
+                                    <label for="street{{ $index }}">Street:</label>
+                                    <input type="text" class="form-control" id="street{{ $index }}" name="addresses[{{ $index }}][street]" value="{{ $address->street }}">
+                                    <input type="hidden" name="addresses[{{ $index }}][id]" value="{{ $address->id }}">
+                                </div>
+                                @error('address.street')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group">
+                                    <label for="city{{ $index }}">City:</label>
+                                    <input type="text" class="form-control" id="city{{ $index }}" name="addresses[{{ $index }}][city]" value="{{ $address->city }}">
+                                </div>
+                                @error('address.city')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group">
+                                    <label for="state{{ $index }}">State:</label>
+                                    <input type="text" class="form-control" id="state{{ $index }}" name="addresses[{{ $index }}][state]" value="{{ $address->state }}">
+                                </div>
+                                @error('address.state')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group">
+                                    <label for="country{{ $index }}">Country:</label>
+                                    <input type="text" class="form-control" id="country{{ $index }}" name="addresses[{{ $index }}][country]" value="{{ $address->country }}">
+                                </div>
+                                @error('address.country')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                            @endforeach
+
                             <button type="submit" class="btn btn-primary">Update</button>
                         </form>
                     </div>

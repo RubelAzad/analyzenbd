@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('custom_users')->onDelete('cascade');
-            $table->string('street');
-            $table->string('city');
-            $table->string('state');
-            $table->string('country');
-            // Add other address columns here
+            $table->string('street')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
             $table->timestamps();
         });
     }

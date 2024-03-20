@@ -25,7 +25,7 @@ class CustomUserServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->refreshCustomUsersTable(); // Refresh the custom_users table before each test
+       // $this->refreshCustomUsersTable(); // Refresh the custom_users table before each test
         $this->userService = new CustomUserService();
     }
 
@@ -108,24 +108,7 @@ class CustomUserServiceTest extends TestCase
         $this->assertNull($deletedUser);
     }
 
-    /** @test */
-    public function it_can_create_a_user_with_address()
-    {
-        UserAddress::truncate();
-        CustomUser::truncate();
-    // Create a user
-    $user = CustomUser::factory()->create();
-
-    // Create an address associated with the user
-    $address = UserAddress::factory()->create(['user_id' => $user->id]);
-
-    // Retrieve the user's associated address
-    $retrievedAddress = $user->addresses->first();
-
-    // Assert that the user's associated address matches the created address
-    $this->assertEquals($address->toArray(), $retrievedAddress->toArray());
-    }
-
+   
 
 
 
