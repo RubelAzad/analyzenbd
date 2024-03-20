@@ -28,3 +28,4 @@ Make sure that you have setup the environment properly. You will need minimum PH
 * see the customer list
 * When delete is clicked, the data will be moved to a soft delete custom user list page.
 * You will see options to Restore or Permanently Delete the data on the Soft delete list page. Clicking the Restore button will restore the data, while clicking the Permanently Delete button will remove the data from the database table row.
+* Level 1, Level 2 and Level 3 Features Completed.
