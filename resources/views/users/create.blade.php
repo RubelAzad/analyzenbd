@@ -41,34 +41,6 @@
                                 <div class="error" style="color: red;">{{ $message }}</div>
                             @enderror
                             <div class="form-group">
-                                <label for="street">Street:</label>
-                                <input type="text" class="form-control" id="street" name="address[street]">
-                            </div>
-                            @error('address.street')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
-                                <label for="city">City:</label>
-                                <input type="text" class="form-control" id="city" name="address[city]">
-                            </div>
-                            @error('address.city')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
-                                <label for="state">State:</label>
-                                <input type="text" class="form-control" id="state" name="address[state]">
-                            </div>
-                            @error('address.state')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
-                                <label for="country">Country:</label>
-                                <input type="text" class="form-control" id="country" name="address[country]">
-                            </div>
-                            @error('address.country')
-                                <div class="error" style="color: red;">{{ $message }}</div>
-                            @enderror
-                            <div class="form-group">
                                 <label for="photo">Photo:</label>
                                 <div class="custom-file">
                                     <input type="file" class="form-control" id="avatar" name="photo" onchange="previewImage(event)" accept="image/*">
@@ -79,7 +51,37 @@
                                 <div class="error" style="color: red;">{{ $message }}</div>
                             @enderror
 
-
+                            <div id="address-fields" class="mb-4">
+                                <div class="form-group">
+                                    <label for="street">Street:</label>
+                                    <input type="text" class="form-control" name="address[0][street]">
+                                </div>
+                                @error('address.street')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group">
+                                    <label for="city">City:</label>
+                                    <input type="text" class="form-control" name="address[0][city]">
+                                </div>
+                                 @error('address.city')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group">
+                                    <label for="state">State:</label>
+                                    <input type="text" class="form-control" name="address[0][state]">
+                                </div>
+                                @error('address.state')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                                <div class="form-group mb-2">
+                                    <label for="country">Country:</label>
+                                    <input type="text" class="form-control" name="address[0][country]">
+                                </div>
+                                @error('address.country')
+                                    <div class="error" style="color: red;">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <button type="button" class="btn btn-secondary" id="add-address">Add Address</button>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
                     </div>
@@ -90,6 +92,37 @@
     </div>
 
     <script>
+        function previewImage(event) {
+            var preview = document.getElementById('preview');
+            preview.style.display = 'block';
+            preview.src = URL.createObjectURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+    document.getElementById('add-address').addEventListener('click', function () {
+        const addressFields = document.getElementById('address-fields');
+        const newAddressField = document.createElement('div');
+        newAddressField.className = 'address-group';
+        newAddressField.innerHTML = `
+            <div class="form-group">
+                <label>Street:</label>
+                <input type="text" class="form-control" name="address[${addressFields.children.length}][street]">
+            </div>
+            <div class="form-group">
+                <label>City:</label>
+                <input type="text" class="form-control" name="address[${addressFields.children.length}][city]">
+            </div>
+            <div class="form-group">
+                <label>State:</label>
+                <input type="text" class="form-control" name="address[${addressFields.children.length}][state]">
+            </div>
+            <div class="form-group">
+                <label>Country:</label>
+                <input type="text" class="form-control" name="address[${addressFields.children.length}][country]">
+            </div>
+        `;
+        addressFields.appendChild(newAddressField);
+    });
         function previewImage(event) {
             var preview = document.getElementById('preview');
             preview.style.display = 'block';

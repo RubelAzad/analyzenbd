@@ -28,7 +28,7 @@ class CustomUserController extends Controller
     {
         return view('users.create');
     }
-   public function store(Request $request)
+    public function store(Request $request)
     {
         // Validate the request data
         $validatedData = $request->validate([
@@ -36,45 +36,40 @@ class CustomUserController extends Controller
             'email' => 'required|email|unique:custom_users,email',
             'password' => 'required|string',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'address.street' => 'required|string',
-            'address.city' => 'required|string',
-            'address.state' => 'required|string',
-            'address.country' => 'required|string',
-        ], [
-            'address.street.required' => 'The street field is required.',
-            'address.city.required' => 'The city field is required.',
-            'address.state.required' => 'The state field is required.',
-            'address.country.required' => 'The country field is required.',
         ]);
 
         // Create the user using the UserService
         $user = $this->userService->create($validatedData);
 
-            $addressData = [
-        [
-            'street' => $request->input('address.street'),
-            'city' => $request->input('address.city'),
-            'state' => $request->input('address.state'),
-            'country' => $request->input('address.country'),
-            // Add other address fields as needed
-        ]
-    ];
+        // Create an array to store address data
+        $addressData = [];
 
+        // Extract address data from the request
+        foreach ($request->input('address') as $address) {
+            $addressData[] = [
+                'street' => $address['street'],
+                'city' => $address['city'],
+                'state' => $address['state'],
+                'country' => $address['country'],
+                // Add other address fields as needed
+            ];
+        }
 
-
-    // Dispatch the UserSavedEvent with user and address data
+        // Dispatch the UserSavedEvent with user and address data
         event(new UserSavedEvent($user, $addressData));
 
         // Redirect back with success message
         return redirect()->route('customuser.index')->with('success', 'User created successfully');
     }
+
+
     public function edit(CustomUser $customuser)
     {
 
         return view('users.edit', compact('customuser'));
 
     }
-      public function show(CustomUser $customuser)
+    public function show(CustomUser $customuser)
     {
 
         return view('users.show', compact('customuser'));
@@ -84,29 +79,22 @@ class CustomUserController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:custom_users,email,'.$id,
-            'password' => 'required|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:100',
-            'address.street' => 'required|string',
-            'address.city' => 'required|string',
-            'address.state' => 'required|string',
-            'address.country' => 'required|string',
-        ], [
-            'address.street.required' => 'The street field is required.',
-            'address.city.required' => 'The city field is required.',
-            'address.state.required' => 'The state field is required.',
-            'address.country.required' => 'The country field is required.',
-        ]);
 
         $user = $this->userService->find($id);
-        $this->userService->update($user, $validatedData);
+        $this->userService->update($user,$request->all());
 
         // Update the user's address
-        $user->addresses()->updateOrCreate([], $validatedData['address']);
-
+    foreach ($request->input('addresses', []) as $addressData) {
+        if (isset($addressData['id'])) {
+            // Update existing address
+            $user->addresses()->where('id', $addressData['id'])->update($addressData);
+        } else {
+            // Create new address
+            $user->addresses()->create($addressData);
+        }
+    }
+        // $user = $this->userService->find($id);
+        // $this->userService->update($user, $request->all());
         return redirect()->route('customuser.index')->with('success', 'User updated successfully');
     }
 
