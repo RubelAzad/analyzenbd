@@ -16,6 +16,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Address</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -24,16 +25,17 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ $user->addresses->first()->street ?? '' }},{{ $user->addresses->first()->state ?? '' }},{{ $user->addresses->first()->city ?? '' }},{{ $user->addresses->first()->country ?? '' }}</td>
                             <td>
                                 <form action="{{ route('restore', $user->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-success btn-sm">Restore</button>
+                                    <button type="submit" class="btn btn-success">Restore</button>
                                 </form>
                                 <form action="{{ route('destroy-permanently', $user->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm">Permanently Delete</button>
+                                    <button type="submit" class="btn btn-danger">Permanently Delete</button>
                                 </form>
                             </td>
                         </tr>

@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomUserController;
 use App\Http\Controllers\SoftDeleteController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,19 +37,17 @@ Auth::routes();
 
 
 Route::middleware('auth')->group(function () {
-
     Route::resource('customuser', CustomUserController::class);
-
-    Route::get('deleted', [CustomUserController::class, 'softdeleteindex'])->name('deleted');
-
-    Route::put('restore/{id}', [SoftDeleteController::class, 'restore'])->name('restore');
-
+     Route::put('restore/{id}', [SoftDeleteController::class, 'restore'])->name('restore');
+    
+     Route::get('deleted', [CustomUserController::class, 'softdeleteindex'])->name('deleted');
+      
     Route::delete('destroy/{id}', [SoftDeleteController::class, 'destroyPermanently'])->name('destroy-permanently');
+    
 
-
-
-
+   
+  
     // Additional routes for soft-deleted users
-
+ 
 });
 

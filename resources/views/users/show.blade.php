@@ -20,6 +20,12 @@
                         <div class="mb-3">
                             <p class="text-secondary"><strong>Name:</strong> {{ $customuser->name }}</p> <!-- Change text color -->
                             <p class="text-secondary"><strong>Email:</strong> {{ $customuser->email }}</p> <!-- Change text color -->
+
+                                @foreach ($customuser->addresses as $address)
+                                <p class="text-secondary"><strong>Addresses:</strong></p>
+                                {{ $address->street }}, {{ $address->city }}, {{ $address->state }}, {{ $address->country }} <br>
+                                @endforeach
+ <!-- Change text color -->
                             <p class="text-secondary"><strong>Photo:</strong></p>
                             <div class="text-left">
                                 <img src="{{ asset('storage/' . $customuser->photo) }}" alt="{{ $customuser->name }}" width="200" class="img-thumbnail mt-4 mb-4">
